@@ -119,6 +119,11 @@ class App extends React.PureComponent {
       e.preventDefault();
       this.refs.showAllDataBox.refs.shortcutTab.click();
     }
+    if (e.key == "c") {
+      e.preventDefault();
+      this.refs.optionsBtn.target = getLinkTarget(e);
+      this.refs.optionsBtn.click();
+    }
   }
   onChangeApi(e) {
     localStorage.setItem("apiVersion", e.target.value + ".0");
@@ -231,6 +236,9 @@ class App extends React.PureComponent {
                   className: "page-button slds-button slds-button_neutral"
                 },
                 h("span", {}, "Setup ", h("u", {}, "H"), "ome")),
+            ),
+            h("div", {className: "slds-m-bottom_xx-small"},
+              h("a", {ref: "optionsBtn", href: "options.html?" + hostArg, target: linkTarget, className: "page-button slds-button slds-button_neutral"}, h("span", {}, h("u", {}, "C"), "onfiguration Options"))
             ),
           )
         ),
