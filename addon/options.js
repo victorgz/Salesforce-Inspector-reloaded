@@ -14,7 +14,6 @@ class Model {
     this.sfHost = sfHost;
     this.sfLink = "https://" + this.sfHost;
     this.userInfo = "...";
-    debugger
     this.orgName = this.sfHost.split(".")[0]?.toUpperCase() || "";
     this.userFullName = "";
     this.userInitials = "";
@@ -126,6 +125,15 @@ class OptionsTabSelector extends React.Component {
               ]}
           },
           {option: FaviconOption, props: {key: this.sfHost + "_customFavicon", tooltip: "You may need to add this domain to CSP trusted domains to see the favicon in Salesforce."}},
+          {option: MultiCheckboxButtonGroup,
+            props: {title: "Override colors",
+              key: "overrideColorsOption",
+              checkboxes: [
+                {label: "Header", name: "header", checked: true},
+                {label: "Favicon", name: "favicon", checked: true},
+                {label: "Org Banner", name: "org-banner", checked: true}
+              ]}
+          },
           {option: Option, props: {type: "toggle", title: "Use favicon color on sandbox banner", key: "colorizeSandboxBanner"}},
           {option: Option, props: {type: "toggle", title: "Highlight PROD (color from favicon)", key: "colorizeProdBanner", tooltip: "Top border in extension pages and banner on Salesforce"}},
           {option: Option, props: {type: "text", title: "Banner text", key: this.sfHost + "_prodBannerText", tooltip: "Text that will be displayed in the banner (if enabled)", placeholder: "WARNING: THIS IS PRODUCTION"}},
@@ -981,6 +989,7 @@ class FaviconOption extends React.Component {
           h(Tooltip, {tooltip: this.tooltip, idKey: this.key || "favicon_option"})
         )
       ),
+      
       h("div", {className: "slds-col slds-size_5-of-12 slds-form-element slds-grid slds-grid_align-start slds-grid_vertical-align-center slds-gutters_small"},
         h("div", {className: "slds-col slds-form-element__control"},
           h("input", {type: "text", className: "slds-input", placeholder: "All HTML Color Names, Hex code or external URL", value: nullToEmptyString(this.state.favicon), onChange: this.onChangeFavicon}),
@@ -1826,6 +1835,7 @@ class App extends React.Component {
         pageTitle: "Options",
         orgName: model.orgName,
         sfLink: model.sfLink,
+        sfHost: model.sfHost,
         spinnerCount: model.spinnerCount,
         userInitials: model.userInitials,
         userFullName: model.userFullName,
