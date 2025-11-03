@@ -1797,7 +1797,7 @@ class App extends React.Component {
     // Define utility items for this page (injected as "slots")
     const utilityItems = [
       // Export Options button
-      h("div", {className: "slds-builder-header__utilities-item slds-p-top_x-small"},
+      h("div", {className: "slds-builder-header__utilities-item slds-p-top_x-small slds-p-horizontal_x-small"},
         h("button", {
           className: "slds-button slds-button_icon slds-button_icon-border-filled",
           onClick: this.exportOptions,
@@ -1809,7 +1809,7 @@ class App extends React.Component {
         )
       ),
       // Import Options button
-      h("div", {className: "slds-builder-header__utilities-item slds-p-top_x-small"},
+      h("div", {className: "slds-builder-header__utilities-item slds-p-top_x-small slds-p-horizontal_x-small"},
         h("button", {
           className: "slds-button slds-button_icon slds-button_icon-border-filled",
           onClick: () => this.refs.fileInput.click(),
