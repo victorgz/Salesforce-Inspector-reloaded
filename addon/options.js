@@ -2,7 +2,6 @@
 import {sfConn, apiVersion, defaultApiVersion} from "./inspector.js";
 import {nullToEmptyString, getLatestApiVersionFromOrg, Constants} from "./utils.js";
 import {getFlowScannerRules} from "./flow-scanner.js";
-/* global initButton, lightningflowscanner */
 import {DescribeInfo} from "./data-load.js";
 import Toast from "./components/Toast.js";
 import Tooltip from "./components/Tooltip.js";
@@ -876,6 +875,8 @@ class FaviconOption extends React.Component {
     this.onChangeFavicon = this.onChangeFavicon.bind(this);
     this.populateFaviconColors = this.populateFaviconColors.bind(this);
     this.onToogleSmartMode = this.onToogleSmartMode.bind(this);
+    this.onColorPickerClick = this.onColorPickerClick.bind(this);
+    this.pickerInstance = null;
 
     let favicon = localStorage.getItem(this.sfHost + "_customFavicon") ? localStorage.getItem(this.sfHost + "_customFavicon") : "";
     let isInternal = favicon.length > 0 && !favicon.startsWith("http");
@@ -915,6 +916,30 @@ class FaviconOption extends React.Component {
     let favicon = e.target.value;
     this.setState({favicon});
     localStorage.setItem(this.sfHost + "_customFavicon", favicon);
+  }
+
+  onColorPickerClick(e) {
+    const button = e.target.closest("button");
+
+    // Clean up existing picker if any
+    if (this.pickerInstance) {
+      this.pickerInstance.destroy();
+    }
+
+    // Create new picker instance
+    this.pickerInstance = new Picker({
+      parent: button,
+      popup: "top",
+      alpha: false,
+      color: this.state.favicon || "#000000",
+      onChange: (color) => {
+        const hexColor = color.hex;
+        this.setState({favicon: hexColor, isInternal: true});
+        localStorage.setItem(this.sfHost + "_customFavicon", hexColor);
+      }
+    });
+
+    this.pickerInstance.show();
   }
 
   onToogleSmartMode(e) {
@@ -994,10 +1019,14 @@ class FaviconOption extends React.Component {
         h("div", {className: "slds-col slds-form-element__control"},
           h("input", {type: "text", className: "slds-input", placeholder: "All HTML Color Names, Hex code or external URL", value: nullToEmptyString(this.state.favicon), onChange: this.onChangeFavicon}),
         ),
-        h("div", {className: "slds-form-element__control slds-col slds-size_2-of-12"},
-          this.state.isInternal ? h("svg", {className: "icon"},
-            h("circle", {r: "12", cx: "12", cy: "12", fill: this.state.favicon})
-          ) : null
+        h("div", {className: "slds-form-element__control slds-col"},
+          h("button", {
+            className: "color-picker-button",
+            style: {backgroundColor: this.state.isInternal ? this.state.favicon : "#cccccc"},
+            onClick: this.onColorPickerClick,
+            title: "Pick a color",
+            type: "button"
+          })
         )
       ),
       h("div", {className: "slds-col slds-size_2-of-12 slds-form-element slds-grid slds-grid_align-start slds-grid_vertical-align-center slds-gutters_small"},

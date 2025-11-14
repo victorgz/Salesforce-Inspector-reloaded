@@ -313,3 +313,23 @@ body {
   position: fixed !important;
   z-index: 10000;
 }
+
+/* Color Picker Button Styles */
+.color-picker-button {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #dddbda;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  display: inline-block;
+  transition: border-color 0.2s;
+}
+
+.color-picker-button:hover {
+  border-color: #0070d2;
+}
+
+.color-picker-button:active {
+  border-color: #014486;
+}
