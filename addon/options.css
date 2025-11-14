@@ -328,6 +328,7 @@ body {
 
 .color-picker-button:hover {
   border-color: #0070d2;
+  cursor: pointer;
 }
 
 .color-picker-button:active {
